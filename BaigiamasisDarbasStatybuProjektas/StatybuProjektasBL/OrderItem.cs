@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace StatybuProjektasBL
 {
-    public class OredrItem
+    public class OrderItem
     {
         public SudedamojiDalis SudedamojiDalis;
         public int Kiekis { get; private set; }
 
-        public OredrItem(SudedamojiDalis sudedamojiDalis, int kiekis)
+        public OrderItem(SudedamojiDalis sudedamojiDalis, int kiekis)
         {
             this.SudedamojiDalis = sudedamojiDalis;
             Kiekis = kiekis;

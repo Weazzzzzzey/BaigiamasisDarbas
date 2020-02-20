@@ -49,11 +49,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="OrderItemTest.cs" />
+    <Compile Include="OrderRepositoryTest.cs" />
+    <Compile Include="OrderTestU.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaigiamasisDarbasStatybuProjektas\BaigiamasisDarbasStatybuProjektas.csproj">
+      <Project>{5f15192e-1f9e-47c9-b8ea-c45d9ef8bb04}</Project>
+      <Name>BaigiamasisDarbasStatybuProjektas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StatybuProjektasBL\StatybuProjektasBL.csproj">
+      <Project>{7573e316-5fab-4d5c-a018-382bef860bb0}</Project>
+      <Name>StatybuProjektasBL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

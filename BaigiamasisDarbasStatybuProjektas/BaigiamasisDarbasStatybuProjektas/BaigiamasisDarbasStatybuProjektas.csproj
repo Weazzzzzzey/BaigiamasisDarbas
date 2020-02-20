@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StatybuProjektasBL\StatybuProjektasBL.csproj">
+      <Project>{7573e316-5fab-4d5c-a018-382bef860bb0}</Project>
+      <Name>StatybuProjektasBL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

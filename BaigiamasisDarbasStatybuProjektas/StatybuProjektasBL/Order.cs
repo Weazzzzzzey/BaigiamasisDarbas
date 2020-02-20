@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace StatybuProjektasBL
 {
-    class Order
+    public class Order
     {
-        ImonesKlientai DabartniaiKlientai;
+        KlientuRepositorija DabartniaiKlientai;
         EsamuDaliuRepositorycs esamuDaliuRepositorija;
         public int OrderID { get; set; }
         public DateTime OrderDate { get; set; }
-        public List<OredrItem> perkamosDalysSuKiekiu { get; set; }
+        public List<OrderItem> perkamosDalysSuKiekiu { get; set; }
         public int Statusas { get; set; }
 
         public Klientas Uzsakovas {get; set;}
 
-        public Order(EsamuDaliuRepositorycs imonesDalys, int orderID, int uzsakovoID, List<OredrItem> uzsakymai, ImonesKlientai dabartniaiKlientai)
+        public Order(EsamuDaliuRepositorycs imonesDalys, int orderID, int uzsakovoID, KlientuRepositorija dabartniaiKlientai)
         {
             DabartniaiKlientai = dabartniaiKlientai;
             esamuDaliuRepositorija = imonesDalys;
             OrderID = orderID;
             Uzsakovas = DabartniaiKlientai.Retrieve(uzsakovoID);
-            perkamosDalysSuKiekiu = uzsakymai;
+            perkamosDalysSuKiekiu = new List<OrderItem>() ;
 
             OrderDate = DateTime.Now;
             Statusas = 0;
@@ -31,25 +31,26 @@ namespace StatybuProjektasBL
     
         public void PridetiDali(int daliesID, int daliuKiekis)
         {
-            perkamosDalysSuKiekiu.Add(new OredrItem(esamuDaliuRepositorija.Retrieve(daliesID), daliuKiekis));
+            perkamosDalysSuKiekiu.Add(new OrderItem(esamuDaliuRepositorija.Retrieve(daliesID), daliuKiekis));
         }
 
-        public void IstrintiDalis(int pasirinktaPreke)
+        public void IstrintiDalis(int daliesID)
         {
-            perkamosDalysSuKiekiu.RemoveAt(pasirinktaPreke);
-        }
-
-        public List<OredrItem> Retrieve()
-        {
-            List<SudedamojiDalis> KlientoKainuSarasas = new List<SudedamojiDalis>();
-            foreach (var item in perkamosDalysSuKiekiu)
+            int daliesPozicija = 0;
+            for (int i = 0; i < perkamosDalysSuKiekiu.Count(); i++)
             {
-                KlientoKainuSarasas.Add(item.SudedamojiDalis);
+                if (perkamosDalysSuKiekiu[i].SudedamojiDalis.SudedamosiosDaliesID == daliesID)
+                {
+                    daliesPozicija = i;
+                    break;
+                }
             }
-            return perkamosDalysSuKiekiu;
+            perkamosDalysSuKiekiu.RemoveAt(daliesPozicija);
         }
 
-        public decimal RetrievePrice()
+       
+
+        public decimal OrderPrice()
         {
             decimal kainele = 0;
             foreach (var item in perkamosDalysSuKiekiu)

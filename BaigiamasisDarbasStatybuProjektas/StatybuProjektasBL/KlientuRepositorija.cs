@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace StatybuProjektasBL
 {
-    public class ImonesKlientai
+    public class KlientuRepositorija
     {
         private List<Klientas> Klientai;
 
-        public ImonesKlientai()
+        public KlientuRepositorija()
         {
             Klientai = new List<Klientas>();
+            accesDataBase();
         }
 
         public void accesDataBase()

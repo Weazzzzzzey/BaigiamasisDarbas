@@ -42,12 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EsamuDaliuRepositorycs.cs" />
-    <Compile Include="ImonesKlientai.cs" />
+    <Compile Include="KlientuRepositorija.cs" />
     <Compile Include="Klientas.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="OrdersRepository.cs" />
     <Compile Include="SudedamojiDalis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OredrItem.cs" />
+    <Compile Include="OrderItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

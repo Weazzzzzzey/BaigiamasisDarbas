@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StatybuProjektasBL
 {
-    class EsamuDaliuRepositorycs
+    public class EsamuDaliuRepositorycs
     {
         private List<SudedamojiDalis> sudedamosiosDalysIrKainorastis { get; set; }
 
