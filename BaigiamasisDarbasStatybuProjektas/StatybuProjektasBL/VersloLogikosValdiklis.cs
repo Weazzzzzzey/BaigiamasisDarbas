@@ -19,14 +19,25 @@ namespace StatybuProjektasBL
             VisiOrderiai = visiOrderiai;
             Ataskaita = ataskaita;
         }
+
+        public void Pratesimas()
+        {
+            Console.WriteLine("Testi toliau spauskite ENTER");
+            Console.ReadLine();
+            ParodytiDaliuMeniu();
+        }
         public int AtliktiPatikra(int PasirinkimoMeniu)
         {
             var isNumeric = int.TryParse(Console.ReadLine(), out int n);
-            if (n >= 0 && n <= PasirinkimoMeniu)
+            if (isNumeric == true)
             {
-                return n;
+                if (n >= 0 && n <= PasirinkimoMeniu)
+                {
+                    return n;
+                }
+                else return 999;
             }
-            else return 0;
+            else return 999;
         }
         public void ParodytiDaliuPasirinkimus()
         {
@@ -34,21 +45,32 @@ namespace StatybuProjektasBL
             Console.WriteLine("2 - Parodyti dali pagal saraso ID.");
             Console.WriteLine("3 - Prideti nauja dali.");
             Console.WriteLine("4 - istrinti dali is saraso.");
+            Console.WriteLine("0 - Grizti i Pagrindini Meniu");
         }
         public void ParodytiDaliuSarasa()
         {
+            Console.Clear();
             var dalys = TurimosDalys.Retrieve();
             foreach (var item in dalys)
             {
                 Console.WriteLine("{0} {1} {2} Eur", item.SudedamosiosDaliesID, item.SudedamosiosDaliesPavadinimas, item.SudedamosiosDaliesSavikaina);
             }
+            Console.WriteLine("\nTesti toliau spauskite Enter!");
+            Console.ReadLine();
+            ParodytiDaliuMeniu();
         }
         public void ParodytiDaliPagalID()
         {
             Console.WriteLine("Iveskite prekes ID");
-            int PrekesPasirinkimas = Convert.ToInt32(Console.ReadLine());
-            SudedamojiDalis vienaDalis = TurimosDalys.Retrieve(PrekesPasirinkimas);
-            Console.WriteLine("{0} {1} {2} Eur", vienaDalis.SudedamosiosDaliesID, vienaDalis.SudedamosiosDaliesPavadinimas, vienaDalis.SudedamosiosDaliesSavikaina);
+            int PrekesPasirinkimas = AtliktiPatikra(999);
+            if (TurimosDalys.arYraToksIDSarase(PrekesPasirinkimas) != 999)
+            {
+                SudedamojiDalis vienaDalis = TurimosDalys.Retrieve(PrekesPasirinkimas);
+                Console.WriteLine("{0} {1} {2} Eur", vienaDalis.SudedamosiosDaliesID, vienaDalis.SudedamosiosDaliesPavadinimas, vienaDalis.SudedamosiosDaliesSavikaina);
+            }
+            else Console.WriteLine("Tokio ID sarase Nera");
+
+            Pratesimas();
         }
         public void PridetiNaujaPrekia()
         {
@@ -57,6 +79,8 @@ namespace StatybuProjektasBL
             string Pavadinimas = Console.ReadLine();
             decimal Kaina = Convert.ToDecimal(Console.ReadLine());
             TurimosDalys.PridetiNaujaPrekia(ID, Pavadinimas, Kaina);
+
+            Pratesimas();
         }
         public void IstrintiDaliIsSaraso()
         {
@@ -66,6 +90,7 @@ namespace StatybuProjektasBL
         }
         public void ParodytiDaliuMeniu()
         {
+            Console.Clear();
             ParodytiDaliuPasirinkimus();
             int pasirinkimas = AtliktiPatikra(4);
 
@@ -85,9 +110,13 @@ namespace StatybuProjektasBL
             {
                 IstrintiDaliIsSaraso();
             }
-            else if (pasirinkimas == 0)
+            else if (pasirinkimas == 999)
             {
                 ParodytiDaliuMeniu();
+            }
+            else if (pasirinkimas == 0)
+            {
+                PagrindinisMeniu();
             }
         }
         public void PaordytiKlientuPasirinkimus()
@@ -96,6 +125,7 @@ namespace StatybuProjektasBL
             Console.WriteLine("2 - Parodyti Klienta pagal saraso ID.");
             Console.WriteLine("3 - Prideti nauja Klienta.");
             Console.WriteLine("4 - istrinti Klienta is saraso.");
+            Console.WriteLine("0 - Gristi i pagrindini Meniu.");
         }
         public void ParodytiKlientuSarasa()
         {
@@ -128,6 +158,7 @@ namespace StatybuProjektasBL
         }
         public void ParodytiKlientuMeniu()
         {
+            Console.Clear();
             PaordytiKlientuPasirinkimus();
             int pasirinkimas = AtliktiPatikra(4);
 
@@ -147,9 +178,13 @@ namespace StatybuProjektasBL
             {
                 IstrintiKlientaIsSaraso();
             }
-            else if (pasirinkimas == 0)
+            else if (pasirinkimas == 999)
             {
                 ParodytiKlientuMeniu();
+            }
+            else if (pasirinkimas == 0)
+            {
+                PagrindinisMeniu(); ;
             }
         }
         public void UzsakymuMeniuGalimybes()
@@ -162,6 +197,7 @@ namespace StatybuProjektasBL
             Console.WriteLine("6 - Prideti daliu uzsakymui");
             Console.WriteLine("7 - Istrinti Uzsakyma");
             Console.WriteLine("8 - Istrinti dalis uzsakyme");
+            Console.WriteLine("0 - Gristi i Pagrindini Meniu");
 
         }
         public void ParodytiVisusUzsakymus()
@@ -236,6 +272,7 @@ namespace StatybuProjektasBL
         }
         public void UzsakymuMeniu()
         {
+            Console.Clear();
             UzsakymuMeniuGalimybes();
             VisiOrderiai.PerziuretiVisusUzsakymus();
             int pasirinkimas = AtliktiPatikra(8);
@@ -272,9 +309,13 @@ namespace StatybuProjektasBL
             {
                 IstrintiTamTikraDali();
             }
-            else if (pasirinkimas == 0)
+            else if (pasirinkimas == 999)
             {
                 UzsakymuMeniu();
+            }
+            else if (pasirinkimas == 0)
+            {
+                PagrindinisMeniu();
             }
         }
         public void ParodytiAtaskaitosMeniu()
@@ -286,8 +327,8 @@ namespace StatybuProjektasBL
             Console.WriteLine("5 - Apskaiciuoti uzsakymu kaina pagal Pradeta Statusa");
             Console.WriteLine("6 - Apskaiciuoti uzsakymu kaina pagal Vykdoma Statusa");
             Console.WriteLine("7 - Apskaiciuoti uzsakymu kaina pagal Baigta Statusa");
+            Console.WriteLine("0 - Grizsti i Pagrindini Meniu");
         }
-        
         public void ParodytiPradetusUzsakymus()
         {
             var vykdomi = Ataskaita.PagamintiAtaskaitaPagalStatusaKatikPradeti();
@@ -296,7 +337,6 @@ namespace StatybuProjektasBL
                 Console.WriteLine("{0} {1} {2} {3}",item.orderID, item.klientoVardas, item.klientoPavarde,item.orderioData);
             }
         }
-
         public void ParodytiVykdomusUzsakymus()
         {
             var vykdomi = Ataskaita.PagamintiAtaskaitaPagalStatusaVykdomi();
@@ -305,7 +345,6 @@ namespace StatybuProjektasBL
                 Console.WriteLine("{0} {1} {2} {3}", item.orderID, item.klientoVardas, item.klientoPavarde, item.orderioData);
             }
         }
-
         public void ParodytiBaigusUzsakymus()
         {
             var vykdomi = Ataskaita.PagamintiAtaskaitaPagalStatusaBaigti();
@@ -314,31 +353,27 @@ namespace StatybuProjektasBL
                 Console.WriteLine("{0} {1} {2} {3}", item.orderID, item.klientoVardas, item.klientoPavarde, item.orderioData);
             }
         }
-
         public void paskaiciuotiOrderiuSumaPradeti()
         {
             Console.WriteLine(Ataskaita.ApskaiciuotiVisuOrderiuKainaPagalPradetuStatusa());
         }
-
         public void paskaiciuotiOrderiuSumaVykdomi()
         {
             Console.WriteLine(Ataskaita.ApskaiciuotiVisuOrderiuKainaPagalVykdomuStatusa()); 
         }
-
         public void paskaiciuotiOrderiuSumaBaigti()
         {
             Console.WriteLine(Ataskaita.ApskaiciuotiVisuOrderiuKainaPagalBaigtuStatusa());
         }
-
         public void UzsakymoIsvestine()
         {
             Console.WriteLine("Iveskite Uzsakymo ID.");
             int orderID = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine(Ataskaita.UzsakymoIsvestine(orderID));
         }
-
         public void AtaskaitosMeniu()
         {
+            Console.Clear();
             ParodytiAtaskaitosMeniu();
             int pasirinkimas = AtliktiPatikra(8);
 
@@ -370,25 +405,29 @@ namespace StatybuProjektasBL
             {
                 paskaiciuotiOrderiuSumaBaigti();
             }
-            else if (pasirinkimas == 8)
+            else if (pasirinkimas == 999)
             {
                 AtaskaitosMeniu();
             }
+            else if (pasirinkimas == 0)
+            {
+                PagrindinisMeniu();
+            }
         }
-
-
         public void ParodytiPagrindiniMeniuPasirinkimus()
         {
             Console.WriteLine("1 - Daliu Meniu");
             Console.WriteLine("2 - Klientu Meniu");
             Console.WriteLine("3 - Uzsakymu Meniu");
             Console.WriteLine("4 - Ataskaitu Meniu");
+            Console.WriteLine("0 - Pabaigti Darba");
         }
         public void PagrindinisMeniu()
         {
+            Console.Clear();
             ParodytiPagrindiniMeniuPasirinkimus();
             int pasirinkimas = AtliktiPatikra(4);
-
+            
             if (pasirinkimas == 1)
             {
                 ParodytiDaliuMeniu();
@@ -405,11 +444,16 @@ namespace StatybuProjektasBL
             {
                 AtaskaitosMeniu();
             }
-            else if (pasirinkimas == 0)
+            else if (pasirinkimas == 999)
             {
                 PagrindinisMeniu();
             }
+            else if (pasirinkimas == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Geros Dienos!");
+                Console.WriteLine("Isjungti langa spauskite Enter.");
+            }
         }
-
     }
 }

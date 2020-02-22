@@ -35,6 +35,18 @@ namespace StatybuProjektasBL
             sudedamosiosDalysIrKainorastis.Add(new SudedamojiDalis(ID, Pavadinimas, Kaina));
         }
         
+        public int arYraToksIDSarase(int ID)
+        {
+            foreach (var item in sudedamosiosDalysIrKainorastis)
+            {
+                if (item.SudedamosiosDaliesID == ID)
+                {
+                    return ID;
+                }
+            }
+            return 999;
+        }
+
         public void IstrintiIsSaraso(int ID)
         {
             int indeksiukas = 0;
