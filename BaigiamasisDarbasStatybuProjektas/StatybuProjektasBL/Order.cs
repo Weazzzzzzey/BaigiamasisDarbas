@@ -11,10 +11,9 @@ namespace StatybuProjektasBL
         KlientuRepositorija DabartniaiKlientai;
         EsamuDaliuRepositorycs esamuDaliuRepositorija;
         public int OrderID { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; private set; }
         public List<OrderItem> perkamosDalysSuKiekiu { get; set; }
         public int Statusas { get; set; }
-
         public Klientas Uzsakovas {get; set;}
 
         public Order(EsamuDaliuRepositorycs imonesDalys, int orderID, int uzsakovoID, KlientuRepositorija dabartniaiKlientai)
@@ -28,7 +27,12 @@ namespace StatybuProjektasBL
             OrderDate = DateTime.Now;
             Statusas = 0;
         }
-    
+
+        public List<OrderItem> GautiVisasDalis()
+        {
+            return perkamosDalysSuKiekiu;
+        }
+
         public void PridetiDali(int daliesID, int daliuKiekis)
         {
             perkamosDalysSuKiekiu.Add(new OrderItem(esamuDaliuRepositorija.Retrieve(daliesID), daliuKiekis));
@@ -48,8 +52,6 @@ namespace StatybuProjektasBL
             perkamosDalysSuKiekiu.RemoveAt(daliesPozicija);
         }
 
-       
-
         public decimal OrderPrice()
         {
             decimal kainele = 0;
@@ -60,6 +62,5 @@ namespace StatybuProjektasBL
 
             return kainele;
         }
-
     }
 }

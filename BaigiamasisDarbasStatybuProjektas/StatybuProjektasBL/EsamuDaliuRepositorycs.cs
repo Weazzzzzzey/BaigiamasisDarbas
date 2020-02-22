@@ -30,6 +30,23 @@ namespace StatybuProjektasBL
             sudedamosiosDalysIrKainorastis.Add(new SudedamojiDalis(9,"SoninisStogas",350.99m));
         }
 
+        public void PridetiNaujaPrekia(int ID, string Pavadinimas, decimal Kaina)
+        {
+            sudedamosiosDalysIrKainorastis.Add(new SudedamojiDalis(ID, Pavadinimas, Kaina));
+        }
+        
+        public void IstrintiIsSaraso(int ID)
+        {
+            int indeksiukas = 0;
+            for (int i = 0; i < sudedamosiosDalysIrKainorastis.Count; i++)
+            {
+                if (sudedamosiosDalysIrKainorastis[i].SudedamosiosDaliesID == ID)
+                {
+                    indeksiukas = i;
+                }
+            }
+            sudedamosiosDalysIrKainorastis.RemoveAt(indeksiukas);
+        }
         public List<SudedamojiDalis> Retrieve()
         {
             return sudedamosiosDalysIrKainorastis;

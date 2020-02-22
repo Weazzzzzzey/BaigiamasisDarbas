@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtaskaiteliuGeneratorius.cs" />
+    <Compile Include="VersloLogikosValdiklis.cs" />
+    <Compile Include="StatusuAtaskaitele.cs" />
     <Compile Include="EsamuDaliuRepositorycs.cs" />
     <Compile Include="KlientuRepositorija.cs" />
     <Compile Include="Klientas.cs" />

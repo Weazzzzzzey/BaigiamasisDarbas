@@ -8,18 +8,64 @@ namespace StatybuProjektasBL
 {
     public class OrdersRepository
     {
-        public List<Order> VisiUzsakymai { get; set; }
-       
-
-        public OrdersRepository()
+        private List<Order> VisiUzsakymai { get; set; }
+        private EsamuDaliuRepositorycs TurimosDalys;
+        private KlientuRepositorija ImonesKlientai;
+        public OrdersRepository(EsamuDaliuRepositorycs turimosDalys, KlientuRepositorija imonesKlientai)
         {
             VisiUzsakymai = new List<Order>();
+            TurimosDalys = turimosDalys;
+            ImonesKlientai = imonesKlientai;
+            SeniauPriimtiUzsakymai();
         }
 
+        private void SeniauPriimtiUzsakymai()
+        {
+            VisiUzsakymai.Add(new Order(TurimosDalys, 0, 1, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 1, 3, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 2, 6, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 3, 1, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 4, 5, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 5, 4, ImonesKlientai));
+
+            pridetiDaliUsakymui(0, 0, 1);
+            pridetiDaliUsakymui(0, 2, 4);
+            pridetiDaliUsakymui(0, 4, 4);
+            pridetiDaliUsakymui(0, 8, 1);
+            PakeistiStatusa(0, 1);
+
+            pridetiDaliUsakymui(1, 0, 2);
+            pridetiDaliUsakymui(1, 1, 2);
+            pridetiDaliUsakymui(1, 2, 4);
+            pridetiDaliUsakymui(1, 4, 8);
+            pridetiDaliUsakymui(1, 5, 2);
+            pridetiDaliUsakymui(1, 7, 2);
+            pridetiDaliUsakymui(1, 8, 2);
+            pridetiDaliUsakymui(1, 9, 2);
+            PakeistiStatusa(1, 1);
+
+            pridetiDaliUsakymui(2, 0, 1);
+            pridetiDaliUsakymui(2, 2, 2);
+            pridetiDaliUsakymui(2, 3, 2);
+            pridetiDaliUsakymui(2, 7, 1);
+            pridetiDaliUsakymui(2, 8, 1);
+            PakeistiStatusa(2, 1);
+
+            pridetiDaliUsakymui(4, 0, 1);
+            pridetiDaliUsakymui(4, 1, 2);
+            pridetiDaliUsakymui(4, 2, 2);
+            pridetiDaliUsakymui(4, 3, 6);
+            pridetiDaliUsakymui(4, 5, 1);
+            pridetiDaliUsakymui(4, 7, 1);
+            pridetiDaliUsakymui(4, 8, 2);
+            pridetiDaliUsakymui(4, 9, 2);
+            PakeistiStatusa(4, 1);
+
+        }
         
         public void PridetiNaujaUzsakyma(int OrderioID, int UzsakovoID)
         {
-            VisiUzsakymai.Add(new Order(new EsamuDaliuRepositorycs(), OrderioID,UzsakovoID, new KlientuRepositorija()));
+            VisiUzsakymai.Add(new Order(TurimosDalys, OrderioID,UzsakovoID, ImonesKlientai));
         }
 
         public void pridetiDaliUsakymui(int orderID,int daliesID, int daliesKiekis)
@@ -33,7 +79,6 @@ namespace StatybuProjektasBL
             }
             
         }
-
 
         public List<Order> PerziuretiVisusUzsakymus()
         {
@@ -50,6 +95,27 @@ namespace StatybuProjektasBL
                 }
             }
             return null;
+        }
+
+        public void IstrintiDaliPagal(int OrderID, int DaliesID)
+        {
+            int indeksiukas = 0;
+            for (int i = 0; i < VisiUzsakymai.Count; i++)
+            {
+                if (OrderID == VisiUzsakymai[i].OrderID)
+                {
+                    for (int j = 0; j < VisiUzsakymai[i].perkamosDalysSuKiekiu.Count; j++)
+                    {
+                        if(VisiUzsakymai[i].perkamosDalysSuKiekiu[j].SudedamojiDalis.SudedamosiosDaliesID == DaliesID)
+                        {
+                            indeksiukas = j;
+                        }
+                    }
+                }
+            }
+
+            VisiUzsakymai[OrderID].perkamosDalysSuKiekiu.RemoveAt(indeksiukas);
+
         }
 
         public void PakeistiStatusa(int ID, int StatusoID)

@@ -8,9 +8,13 @@ namespace BaigiamasisDarbasTest
     [TestClass]
     public class OrderRepositoryTest
     {
-        OrdersRepository Orderiai = new OrdersRepository();
+        OrdersRepository Orderiai;
 
-
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Orderiai = new OrdersRepository(new EsamuDaliuRepositorycs(), new KlientuRepositorija());
+        }
 
         [TestMethod]
         public void ArSarasasTuscias()

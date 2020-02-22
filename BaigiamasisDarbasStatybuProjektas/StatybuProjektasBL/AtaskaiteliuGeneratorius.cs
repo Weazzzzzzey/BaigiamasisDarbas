@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StatybuProjektasBL
 {
-    class AtaskaiteliuGeneratorius
+    public class AtaskaiteliuGeneratorius
     {
         
         public OrdersRepository ImonesOrderiuHardas { get; private set; }
@@ -22,21 +22,15 @@ namespace StatybuProjektasBL
             string OrderioDydis = "";
             List<Order> visiImonesOrderiai = ImonesOrderiuHardas.PerziuretiVisusUzsakymus();
             List<OrderItem> visosDalys = visiImonesOrderiai[OrderioID].GautiVisasDalis();
-            string Vardas = visiImonesOrderiai[OrderioID].KlientoVardas();
-            string Pavarde = visiImonesOrderiai[OrderioID].KlientoPavarde();
-            List<SudedamojiDalis> sudedamojiDalis = new List<SudedamojiDalis>();
-            OrderioDydis = $"{OrderioID} {Vardas} {Pavarde} \n";
-            
+            string Vardas = visiImonesOrderiai[OrderioID].Uzsakovas.Vardas;
+            string Pavarde = visiImonesOrderiai[OrderioID].Uzsakovas.Pavarde;
+            decimal BendraSuma = visiImonesOrderiai[OrderioID].OrderPrice();
+            OrderioDydis = $"{OrderioID} {Vardas} {Pavarde} {BendraSuma} \n";
+            Console.WriteLine("ID Pavadinimas Savikaina Kiekis GalutineKaina");
             foreach (var item in visosDalys)
             {
-                sudedamojiDalis.Add(item.SudedamojiDalis);
+                OrderioDydis = OrderioDydis + $"{item.SudedamojiDalis.SudedamosiosDaliesID} {item.SudedamojiDalis.SudedamosiosDaliesPavadinimas} {item.SudedamojiDalis.SudedamosiosDaliesSavikaina} {item.Kiekis} {item.ItemPrise()} Eur\n";
             }
-
-            foreach (var item in sudedamojiDalis)
-            {
-                OrderioDydis = OrderioDydis + $"{item.SudedamosiosDaliesID} {item.SudedamosiosDaliesPavadinimas} {item.SudedamosiosDaliesSavikaina}";
-            }
-            
             return OrderioDydis;
         }
 
@@ -93,7 +87,7 @@ namespace StatybuProjektasBL
             {
                 if (item.Statusas == statusas)
                 {
-                    pagalStatusa.Add(new StatusuAtaskaitele(item.OrderID, item.KlientoVardas(), item.KlientoPavarde(), item.OrderDate));
+                    pagalStatusa.Add(new StatusuAtaskaitele(item.OrderID, item.Uzsakovas.Vardas, item.Uzsakovas.Pavarde, item.OrderDate.ToShortDateString()));
                 }
             }
 

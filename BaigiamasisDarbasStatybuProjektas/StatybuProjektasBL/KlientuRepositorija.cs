@@ -50,5 +50,18 @@ namespace StatybuProjektasBL
             return null;
         }
 
+        public void IstrintiIsSaraso(int ID)
+        {
+            int indeksiukas = 0;
+            for (int i = 0; i < Klientai.Count; i++)
+            {
+                if (Klientai[i].KlientoID == ID)
+                {
+                    indeksiukas = i;
+                }
+            }
+            Klientai.RemoveAt(indeksiukas);
+        }
+
     }
 }
