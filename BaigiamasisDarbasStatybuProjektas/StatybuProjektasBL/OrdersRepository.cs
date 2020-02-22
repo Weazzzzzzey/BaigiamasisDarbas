@@ -19,6 +19,18 @@ namespace StatybuProjektasBL
             SeniauPriimtiUzsakymai();
         }
 
+        public int arYraToksIDSarase(int ID)
+        {
+            foreach (var item in VisiUzsakymai)
+            {
+                if (item.OrderID == ID)
+                {
+                    return ID;
+                }
+            }
+            return 999;
+        }
+
         private void SeniauPriimtiUzsakymai()
         {
             VisiUzsakymai.Add(new Order(TurimosDalys, 0, 1, ImonesKlientai));
@@ -27,12 +39,13 @@ namespace StatybuProjektasBL
             VisiUzsakymai.Add(new Order(TurimosDalys, 3, 1, ImonesKlientai));
             VisiUzsakymai.Add(new Order(TurimosDalys, 4, 5, ImonesKlientai));
             VisiUzsakymai.Add(new Order(TurimosDalys, 5, 4, ImonesKlientai));
+            VisiUzsakymai.Add(new Order(TurimosDalys, 6, 7, ImonesKlientai));
 
             pridetiDaliUsakymui(0, 0, 1);
             pridetiDaliUsakymui(0, 2, 4);
             pridetiDaliUsakymui(0, 4, 4);
             pridetiDaliUsakymui(0, 8, 1);
-            PakeistiStatusa(0, 1);
+            PakeistiStatusa(0, 0);
 
             pridetiDaliUsakymui(1, 0, 2);
             pridetiDaliUsakymui(1, 1, 2);
@@ -61,23 +74,45 @@ namespace StatybuProjektasBL
             pridetiDaliUsakymui(4, 9, 2);
             PakeistiStatusa(4, 1);
 
+            pridetiDaliUsakymui(6, 0, 1);
+            pridetiDaliUsakymui(6, 2, 2);
+            pridetiDaliUsakymui(6, 8, 2);
+            PakeistiStatusa(6, 2);
         }
         
-        public void PridetiNaujaUzsakyma(int OrderioID, int UzsakovoID)
+        public string PridetiNaujaUzsakyma(int OrderioID, int UzsakovoID)
         {
-            VisiUzsakymai.Add(new Order(TurimosDalys, OrderioID,UzsakovoID, ImonesKlientai));
+            var klientas = ImonesKlientai.Retrieve(UzsakovoID);
+            if (klientas != null)
+            {
+                VisiUzsakymai.Add(new Order(TurimosDalys, OrderioID, UzsakovoID, ImonesKlientai));
+                return "Uzsakymas pridetas";
+            }
+            return "Uzsakymas nepridetas";
         }
 
-        public void pridetiDaliUsakymui(int orderID,int daliesID, int daliesKiekis)
+        public bool pridetiDaliUsakymui(int orderID,int daliesID, int daliesKiekis)
         {
+            if (daliesID == 999 || daliesKiekis == 999)
+            {
+                return false;
+            }
+
+            if (TurimosDalys.arYraToksIDSarase(daliesID) == 999)
+            {
+                return false;
+            }
+            
+
             for (int i = 0; i < VisiUzsakymai.Count(); i++)
             {
                 if (VisiUzsakymai[i].OrderID == orderID)
                 {
                     VisiUzsakymai[i].PridetiDali(daliesID, daliesKiekis);
+                    return true;
                 }
             }
-            
+            return false;
         }
 
         public List<Order> PerziuretiVisusUzsakymus()
@@ -97,25 +132,36 @@ namespace StatybuProjektasBL
             return null;
         }
 
-        public void IstrintiDaliPagal(int OrderID, int DaliesID)
+        public bool IstrintiDaliPagal(int OrderID, int DaliesID)
         {
             int indeksiukas = 0;
+            int sarasuDydis = 0;
             for (int i = 0; i < VisiUzsakymai.Count; i++)
             {
                 if (OrderID == VisiUzsakymai[i].OrderID)
                 {
                     for (int j = 0; j < VisiUzsakymai[i].perkamosDalysSuKiekiu.Count; j++)
                     {
-                        if(VisiUzsakymai[i].perkamosDalysSuKiekiu[j].SudedamojiDalis.SudedamosiosDaliesID == DaliesID)
+                        if (VisiUzsakymai[i].perkamosDalysSuKiekiu[j].SudedamojiDalis.SudedamosiosDaliesID == DaliesID)
                         {
                             indeksiukas = j;
+                            sarasuDydis = VisiUzsakymai[i].perkamosDalysSuKiekiu.Count;
                         }
+                        
                     }
                 }
             }
 
-            VisiUzsakymai[OrderID].perkamosDalysSuKiekiu.RemoveAt(indeksiukas);
 
+            if(sarasuDydis > indeksiukas)
+            {
+                VisiUzsakymai[OrderID].perkamosDalysSuKiekiu.RemoveAt(indeksiukas);
+                return true;
+            }
+
+            return false;
+            
+            
         }
 
         public void PakeistiStatusa(int ID, int StatusoID)
@@ -131,7 +177,7 @@ namespace StatybuProjektasBL
 
         }
 
-        public void IstrintiUzsakyma(int trinamasUzsakymas)
+        public bool IstrintiUzsakyma(int trinamasUzsakymas)
         {
             int indexiukas = 0;
             for (int i = 0; i < VisiUzsakymai.Count; i++)
@@ -140,9 +186,15 @@ namespace StatybuProjektasBL
                 {
                     indexiukas = i;
                 }
+                
             }
 
             VisiUzsakymai.RemoveAt(indexiukas);
+            if (indexiukas == 0) 
+            {
+                return false;
+            }
+            return true;
 
         }
     }

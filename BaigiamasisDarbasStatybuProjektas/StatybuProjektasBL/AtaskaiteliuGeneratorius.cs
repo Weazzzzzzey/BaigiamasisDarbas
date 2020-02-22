@@ -17,10 +17,27 @@ namespace StatybuProjektasBL
             this.ImonesOrderiuHardas = Hardas;
         }
 
+        public int sarasoPatikra(int ID)
+        {
+            List<Order> visiImonesOrderiai = ImonesOrderiuHardas.PerziuretiVisusUzsakymus();
+            foreach (var item in visiImonesOrderiai)
+            {
+                if (item.OrderID == ID)
+                {
+                    return ID;
+                }
+            }
+            return 999;
+        }
+
         public string UzsakymoIsvestine(int OrderioID)
         {
             string OrderioDydis = "";
             List<Order> visiImonesOrderiai = ImonesOrderiuHardas.PerziuretiVisusUzsakymus();
+            if (sarasoPatikra(OrderioID) != OrderioID || sarasoPatikra(OrderioID) == 999)
+            {
+                return "Tokio ID Sarase Nera";
+            }
             List<OrderItem> visosDalys = visiImonesOrderiai[OrderioID].GautiVisasDalis();
             string Vardas = visiImonesOrderiai[OrderioID].Uzsakovas.Vardas;
             string Pavarde = visiImonesOrderiai[OrderioID].Uzsakovas.Pavarde;
@@ -51,16 +68,19 @@ namespace StatybuProjektasBL
 
         public decimal ApskaiciuotiVisuOrderiuKainaPagalPradetuStatusa()
         {
+            Console.Clear();
             return BendrojiSumaVisuOrderiu(0);
         }
 
         public decimal ApskaiciuotiVisuOrderiuKainaPagalVykdomuStatusa()
         {
+            Console.Clear();
             return BendrojiSumaVisuOrderiu(1);
         }
 
         public decimal ApskaiciuotiVisuOrderiuKainaPagalBaigtuStatusa()
         {
+            Console.Clear();
             return BendrojiSumaVisuOrderiu(2);
         }
 

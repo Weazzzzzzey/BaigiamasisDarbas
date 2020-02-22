@@ -37,7 +37,17 @@ namespace StatybuProjektasBL
         {
             return Klientai;
         }
-
+        public int arYraToksIDSarase(int ID)
+        {
+            foreach (var item in Klientai)
+            {
+                if (item.KlientoID == ID)
+                {
+                    return ID;
+                }
+            }
+            return 999;
+        }
         public Klientas Retrieve(int ID)
         {
             foreach (var isgautasKlientas in Klientai)
